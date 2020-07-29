@@ -45,6 +45,8 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
   FocusNode cvvFocusNode = FocusNode();
 
   bool obscureText = true;
+  bool isLoading = false;
+  int indexStack = 0;
   DateTime cardExpired = DateTime.now();
 
   void formatDate(DateTime value) {
@@ -87,6 +89,9 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
       cvvFocusNode.requestFocus();
       return;
     }
+    setState(() {
+      indexStack = 1;
+    });
     CardModel cardModel = CardModel(
         card: cardNumberController.text.replaceAll(" ", ""),
         cardCvv: cvvController.text,
@@ -99,7 +104,8 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
         orderReference: widget.orderReference,
         currencyType: widget.currencyType,
         merchantTransactionSecureType: widget.merchantTransactionSecureType,
-        orderDate: widget.orderDate);
+        orderDate: widget.orderDate).then((value) {
+    });
   }
 
   @override
@@ -133,102 +139,110 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                       package: "flutter_wayforpay_package",
                     ),
                   ),
-                  Center(
-                    child: Container(
-                      width: 360,
-                      margin: EdgeInsets.all(16),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(2, 4),
-                              blurRadius: 8)
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          MyTextField(
-                            showSuffixButton: false,
-                            hint: "0000 0000 0000 0000",
-                            focusNode: cardNumberFocusNode,
-                            controller: cardNumberController,
-                            keyboardType: TextInputType.number,
-                            title: "Card Number",
-                            maxLength: 19,
-                            inputFormatters: [cardNumberFormatter],
-                          ),
-                          MyTextField(
-                            showSuffixButton: false,
-                            title: "Card Holder",
-                            focusNode: cardHolderFocusNode,
-                            controller: cardHolderController,
-                            keyboardType: TextInputType.text,
-                            hint: "Ivanov Ivan",
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 2,
-                                child: CupertinoButton(
-                                  onPressed: showDatePicker,
-                                  padding: EdgeInsets.all(0),
+                  Container(
+                    width: 360,
+                    height: 250,
+                    margin: EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(2, 4),
+                            blurRadius: 8)
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                    child: IndexedStack(
+                      index: indexStack,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            MyTextField(
+                              showSuffixButton: false,
+                              hint: "0000 0000 0000 0000",
+                              focusNode: cardNumberFocusNode,
+                              controller: cardNumberController,
+                              keyboardType: TextInputType.number,
+                              title: "Card Number",
+                              maxLength: 19,
+                              inputFormatters: [cardNumberFormatter],
+                            ),
+                            MyTextField(
+                              showSuffixButton: false,
+                              title: "Card Holder",
+                              focusNode: cardHolderFocusNode,
+                              controller: cardHolderController,
+                              keyboardType: TextInputType.text,
+                              hint: "Ivanov Ivan",
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: CupertinoButton(
+                                    onPressed: showDatePicker,
+                                    padding: EdgeInsets.all(0),
+                                    child: MyTextField(
+                                      controller: cardExpiredController,
+                                      showSuffixButton: true,
+                                      title: "Expired",
+                                      hint: "MM/YY",
+                                      enable: false,
+                                      textSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
                                   child: MyTextField(
-                                    controller: cardExpiredController,
                                     showSuffixButton: true,
-                                    title: "Expired",
-                                    hint: "MM/YY",
-                                    enable: false,
+                                    suffixIcon: Icons.visibility,
+                                    focusNode: cvvFocusNode,
+                                    suffixColor: obscureText
+                                        ? Colors.grey
+                                        : Theme.of(context).accentColor,
+                                    title: "CVV",
+                                    controller: cvvController,
+                                    hint: "111",
+                                    inputFormatters: [cvvFormatter],
+                                    keyboardType: TextInputType.number,
+                                    onSuffixPress: showCvv,
+                                    obscureText: obscureText,
+                                    maxLength: 3,
                                     textSize: 20,
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: MyTextField(
-                                  showSuffixButton: true,
-                                  suffixIcon: Icons.visibility,
-                                  focusNode: cvvFocusNode,
-                                  suffixColor: obscureText
-                                      ? Colors.grey
-                                      : Theme.of(context).accentColor,
-                                  title: "CVV",
-                                  controller: cvvController,
-                                  hint: "111",
-                                  inputFormatters: [cvvFormatter],
-                                  keyboardType: TextInputType.number,
-                                  onSuffixPress: showCvv,
-                                  obscureText: obscureText,
-                                  maxLength: 3,
-                                  textSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Center(child: CircularProgressIndicator())
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            FlatButton(
-                onPressed: checkFields,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(0))),
-                color: Theme.of(context).accentColor,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  height: 50,
-                  child: Text(
-                    "Pay",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ))
+            AnimatedOpacity(
+              duration: Duration(milliseconds: 300),
+              opacity: indexStack == 1 ? 0.0 : 1.0,
+              child: FlatButton(
+                  onPressed: indexStack == 1 ? null : checkFields,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(0))),
+                  color: Theme.of(context).accentColor,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                    height: 50,
+                    child: Text(
+                      "Pay",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  )),
+            )
           ],
         ),
       ),

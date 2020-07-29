@@ -38,9 +38,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
     url = buildUrl();
 
-    flutterWebViewPlugin.onUrlChanged.listen((event) {
-      print(event);
-      if (event.toLowerCase().contains(POST_BACK_URL.toLowerCase())) {
+    flutterWebViewPlugin.onUrlChanged.listen((url) {
+      if (url.startsWith("http") && url.toLowerCase().contains(POST_BACK_URL.toLowerCase())) {
         flutterWebViewPlugin
             .evalJavascript(
                 "window.document.getElementsByTagName('body')[0].innerHTML;")
