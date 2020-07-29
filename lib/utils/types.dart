@@ -2,7 +2,6 @@ abstract class MerchantTransactionSecureType {
   static const String AUTO = "AUTO";
   static const String _3DS = "3DS";
   static const String NON3DS = "NON3DS";
-
 }
 
 abstract class CurrencyType {
@@ -13,4 +12,11 @@ abstract class CurrencyType {
 
 abstract class TransactionType {
   static const String CHARGE = "CHARGE";
+  static const String COMPLETE_3DS = "COMPLETE_3DS";
+}
+
+class TransactionStatus {
+  static const String InProcessing = "InProcessing";
+  static const String Approved = "Approved";
+  static const String Declined = "Declined";
 }
