@@ -1,4 +1,4 @@
-# flutter_wayforpay_package
+# Flutter Wayforpay Package
 
 A new Flutter package.
 

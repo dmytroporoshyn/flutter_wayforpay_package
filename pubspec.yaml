@@ -1,8 +1,8 @@
 name: flutter_wayforpay_package
 description: A new Flutter package.
 version: 0.0.1
-author:
-homepage:
+author: Dmytro Poroshyn <dimonator009@gmail.com>
+homepage: https://github.com/dmytroporoshyn/flutter_wayforpay_package
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
