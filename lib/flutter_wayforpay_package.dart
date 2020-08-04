@@ -18,23 +18,58 @@ import 'package:flutter_wayforpay_package/verification_screen.dart';
 import 'card_enter_screen.dart';
 
 class WayForPay {
+  /// Transaction type
+  ///
+  /// For normal payment processing is used [TransactionType.CHARGE]
   String transactionType = TransactionType.CHARGE;
+
+  /// Merchant account
+  ///
+  /// This field is required
+  /// Default test value "test_merch_n1"
   String merchantAccount = "test_merch_n1";
+
+  /// Merchant secret key
+  ///
+  /// This field is required
+  /// Default test value "flk3409refn54t54t*FNJRET"
   String merchantSecretKey = "flk3409refn54t54t*FNJRET";
+
+  /// Merchant domain name
+  ///
+  /// This field is required
+  /// Default value "www.market.ua"
   String merchantDomainName = "www.market.ua";
+
+  /// WayForPay repository
   WayForPayRepository wayForPayRepository = WayForPayRepository();
 
+  /// API version
+  ///
+  /// Default value [Constants.apiVersion]
+  /// Don't change this value, if not needed
   int apiVersion = Constants.apiVersion;
 
+  /// List of products names
   List<String> productName;
+
+  /// List of products prices
   List<dynamic> productPrice;
+
+  /// List of products counts
   List<int> productCount;
 
-  openCardEnterWindow(BuildContext context,
+  /// Open CardEnterScreen
+  ///
+  /// [amount] the amount of payment.
+  /// [currencyType] the currency type, default value [CurrencyType.UAH].
+  /// [merchantTransactionSecureType] the transaction secure type, default value [MerchantTransactionSecureType.AUTO].
+  /// [orderReference] the unique order id, cannot be duplicated, recommend to use uuid.
+  /// [orderDate] order date, it can be is past
+  openCardEnterScreen(BuildContext context,
       {@required dynamic amount,
       String currencyType = CurrencyType.UAH,
-      String merchantTransactionSecureType =
-          MerchantTransactionSecureType.NON3DS,
+      String merchantTransactionSecureType = MerchantTransactionSecureType.AUTO,
       @required String orderReference,
       @required DateTime orderDate}) {
     Navigator.push(
@@ -51,6 +86,14 @@ class WayForPay {
             fullscreenDialog: true));
   }
 
+  /// Start payment process
+  ///
+  /// [cardModel] the card model with card data
+  /// [amount] the amount of payment.
+  /// [currencyType] the currency type, default value [CurrencyType.UAH].
+  /// [merchantTransactionSecureType] the transaction secure type, default value [MerchantTransactionSecureType.AUTO].
+  /// [orderReference] the unique order id, cannot be duplicated, recommend to use uuid.
+  /// [orderDate] order date, it can be is past.
   Future<WayForPayResponse> makePayment(BuildContext context,
       {@required CardModel cardModel,
       @required dynamic amount,
@@ -92,19 +135,16 @@ class WayForPay {
         await wayForPayRepository.fetchWayForPayResponse(wayForPayModel);
     switch (wayForPayResponse.transactionStatus) {
       case TransactionStatus.Approved:
-        print("Approved");
         return wayForPayResponse;
         break;
       case TransactionStatus.InProcessing:
-        print("InProcessing");
         if (wayForPayResponse.reasonCode == 5100) {
-          return open3dsVerification(wayForPayResponse, context);
+          return open3dsVerification(context, wayForPayResponse);
         } else {
           return wayForPayResponse;
         }
         break;
       case TransactionStatus.Declined:
-        print("Declined");
         return wayForPayResponse;
         break;
       default:
@@ -114,10 +154,10 @@ class WayForPay {
   }
 
   Future<WayForPayResponse> open3dsVerification(
-      WayForPayResponse wayForPayResponse, BuildContext context) async {
+      BuildContext context, WayForPayResponse wayForPayResponse) async {
     var paResModel = await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => VerificationScreen(
-        url: wayForPayResponse,
+        wayForPayResponse: wayForPayResponse,
       ),
     ));
 

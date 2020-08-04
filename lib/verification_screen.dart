@@ -5,9 +5,9 @@ import 'package:flutter_wayforpay_package/model/wayforpay_response.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class VerificationScreen extends StatefulWidget {
-  final WayForPayResponse url;
+  final WayForPayResponse wayForPayResponse;
 
-  const VerificationScreen({Key key, this.url}) : super(key: key);
+  const VerificationScreen({Key key, this.wayForPayResponse}) : super(key: key);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -21,9 +21,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
   String url;
 
   String buildUrl() {
-    return '''<form name="downloadForm" action="${widget.url.d3AcsUrl}" method="POST">
-  <input type="hidden" name="PaReq" value="${widget.url.d3Pareq}">
-  <input type="hidden" name="MD" value="${widget.url.d3Pareq}">
+    return '''<form name="downloadForm" action="${widget.wayForPayResponse.d3AcsUrl}" method="POST">
+  <input type="hidden" name="PaReq" value="${widget.wayForPayResponse.d3Pareq}">
+  <input type="hidden" name="MD" value="${widget.wayForPayResponse.d3Pareq}">
   <input type="hidden" name="TermUrl" value="$POST_BACK_URL">
   </form>
   <script>
@@ -39,7 +39,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
     url = buildUrl();
 
     flutterWebViewPlugin.onUrlChanged.listen((url) {
-      if (url.startsWith("http") && url.toLowerCase().contains(POST_BACK_URL.toLowerCase())) {
+      if (url.startsWith("http") &&
+          url.toLowerCase().contains(POST_BACK_URL.toLowerCase())) {
         flutterWebViewPlugin
             .evalJavascript(
                 "window.document.getElementsByTagName('body')[0].innerHTML;")

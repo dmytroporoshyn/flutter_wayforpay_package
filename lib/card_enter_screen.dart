@@ -10,6 +10,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'flutter_wayforpay_package.dart';
 
+
 class CardEnterScreen extends StatefulWidget {
   final WayForPay wayForPay;
   final dynamic amount;
@@ -194,7 +195,7 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                       height: 250,
                       margin: EdgeInsets.all(16),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -273,7 +274,9 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                           Center(
                               child: Icon(
                             CupertinoIcons.check_mark_circled,
+
                             color: Colors.green,
+
                             size: 100,
                           )),
                           Center(
