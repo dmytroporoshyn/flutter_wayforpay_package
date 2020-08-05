@@ -1,6 +1,6 @@
 name: flutter_wayforpay_package
 description: A package to simplify work with the WayForPay payment system. Is a wrapper over WayForPay API.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/dmytroporoshyn/flutter_wayforpay_package
 
 environment:
