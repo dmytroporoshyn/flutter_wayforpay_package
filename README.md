@@ -12,18 +12,79 @@ A package to simplify work with the WayForPay payment system. Is a wrapper over 
 
 ## 📷 Screenshots
 
-<img height="400" src="https://github.com/MaikuB/flutter_local_notifications/raw/master/images/android_notification.png"> |  <img height="400" src="https://github.com/MaikuB/flutter_local_notifications/raw/master/images/ios_notification.png">
+<img height="400" src="https://github.com/dmytroporoshyn/flutter_wayforpay_package/blob/master/images/screen1.png"> |  <img height="400" src="https://github.com/dmytroporoshyn/flutter_wayforpay_package/blob/master/images/screen2.png"> |  <img height="400" src="https://github.com/dmytroporoshyn/flutter_wayforpay_package/blob/master/images/screen3.png">
 
-## ⚙️ Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+## ⚙️ Getting Started  
+  
+Create WayForPay object  
+```dart  
+WayForPay wayForPay = WayForPay();
+ ```  
+  
+Set your merchantAccount and merchantSecretKey  
+```dart  
+wayForPay.merchantAccount = "test_merch_n1";
+wayForPay.merchantSecretKey = "flk3409refn54t54t*FNJRET";
+ ```  
+  
+Set your products list  
+```dart  
+wayForPay.productCount = [1]; 
+wayForPay.productName = ["Test product"];
+wayForPay.productPrice = [0.1];
+ ```  
+  
+Open card enter screen and be ready to get payment status. Check if wayForPayResponse is not null  
+```dart  
+wayForPay  
+    .openCardEnterScreen(context,  
+        orderDate: DateTime.now(),  
+        merchantTransactionSecureType: MerchantTransactionSecureType.AUTO,  
+        orderReference: "testReference",  
+        amount: 0.1)  
+  
+  .then((value) {  
+  if (value != null) {  
+  print("transactionStatus: " +  
+  value.transactionStatus +  
+  ", reasonCode: " +  
+  value.reasonCode.toString() +  
+  ", reason: " +  
+  value.reason);  
+  }  
+});
+ ```  
+### Or
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Create card user data model  
+```dart  
+CardModel cardModel = CardModel(  
+  card: "0000000000000000",  
+    cardCvv: "111",  
+    cardHolder: "Ivanov Ivan",  
+    expMonth: "01",  
+    expYear: "2030");
+ ```  
+  
+And start payment manually  
+```dart  
+wayForPay  
+    .makePayment(context,  
+        cardModel: cardModel,  
+        amount: 0.1,  
+        merchantTransactionSecureType: MerchantTransactionSecureType.AUTO,  
+        orderReference: "testReference",  
+        orderDate: DateTime.now())  
+  .then((value) {  
+  if (value != null) {  
+  print("reasonCode: " +  
+  value.reasonCode.toString() +  
+  ", reason: " +  
+  value.reason);  
+  }  
+});
+ ```
 
 ## ❓ Usage
 Before going on to copy-paste the code snippets in this section, double-check you have configured your application correctly.
