@@ -1,6 +1,6 @@
 abstract class MerchantTransactionSecureType {
   static const String AUTO = "AUTO";
-  static const String _3DS = "3DS";
+  static const String e3DS = "3DS";
   static const String NON3DS = "NON3DS";
 }
 

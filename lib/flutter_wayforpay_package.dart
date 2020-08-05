@@ -66,13 +66,13 @@ class WayForPay {
   /// [merchantTransactionSecureType] the transaction secure type, default value [MerchantTransactionSecureType.AUTO].
   /// [orderReference] the unique order id, cannot be duplicated, recommend to use uuid.
   /// [orderDate] order date, it can be is past
-  openCardEnterScreen(BuildContext context,
+  Future<WayForPayResponse> openCardEnterScreen(BuildContext context,
       {@required dynamic amount,
       String currencyType = CurrencyType.UAH,
       String merchantTransactionSecureType = MerchantTransactionSecureType.AUTO,
       @required String orderReference,
-      @required DateTime orderDate}) {
-    Navigator.push(
+      @required DateTime orderDate}) async {
+    WayForPayResponse wayForPayResponse = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => CardEnterScreen(
@@ -84,6 +84,7 @@ class WayForPay {
                   orderReference: orderReference,
                 ),
             fullscreenDialog: true));
+    return wayForPayResponse;
   }
 
   /// Start payment process
