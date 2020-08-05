@@ -1,4 +1,5 @@
 # Flutter Wayforpay Package
+![Pub Version](https://img.shields.io/pub/v/flutter_wayforpay_package)
 
 A package to simplify work with the WayForPay payment system. Is a wrapper over WayForPay API.
 
@@ -11,7 +12,7 @@ A package to simplify work with the WayForPay payment system. Is a wrapper over 
 
 ## 📷 Screenshots
 
-<img height="400" src="https://github.com/dmytroporoshyn/flutter_wayforpay_package/blob/master/images/screen1.png"> |  <img height="400" src="https://github.com/dmytroporoshyn/flutter_wayforpay_package/blob/master/images/screen2.png"> |  <img height="400" src="https://github.com/dmytroporoshyn/flutter_wayforpay_package/blob/master/images/screen3.png">
+<img height="400" src="https://raw.githubusercontent.com/dmytroporoshyn/flutter_wayforpay_package/master/images/screen1.png">  <img height="400" src="https://raw.githubusercontent.com/dmytroporoshyn/flutter_wayforpay_package/master/images/screen2.png">  <img height="400" src="https://raw.githubusercontent.com/dmytroporoshyn/flutter_wayforpay_package/master/images/screen3.png">
 
 
 ## ⚙️ Getting Started  
