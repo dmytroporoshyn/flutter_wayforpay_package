@@ -5,9 +5,9 @@ import 'package:flutter_wayforpay_package/model/wayforpay_response.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class VerificationScreen extends StatefulWidget {
-  final WayForPayResponse wayForPayResponse;
+  final WayForPayResponse? wayForPayResponse;
 
-  const VerificationScreen({Key key, this.wayForPayResponse}) : super(key: key);
+  const VerificationScreen({Key? key, this.wayForPayResponse}) : super(key: key);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -18,12 +18,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
   static const String POST_BACK_URL =
       "https://demo.cloudpayments.ru/WebFormPost/GetWebViewData";
 
-  String url;
+  late String url;
 
   String buildUrl() {
-    return '''<form name="downloadForm" action="${widget.wayForPayResponse.d3AcsUrl}" method="POST">
-  <input type="hidden" name="PaReq" value="${widget.wayForPayResponse.d3Pareq}">
-  <input type="hidden" name="MD" value="${widget.wayForPayResponse.d3Pareq}">
+    return '''<form name="downloadForm" action="${widget.wayForPayResponse!.d3AcsUrl}" method="POST">
+  <input type="hidden" name="PaReq" value="${widget.wayForPayResponse!.d3Pareq}">
+  <input type="hidden" name="MD" value="${widget.wayForPayResponse!.d3Pareq}">
   <input type="hidden" name="TermUrl" value="$POST_BACK_URL">
   </form>
   <script>
@@ -45,7 +45,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             .evalJavascript(
                 "window.document.getElementsByTagName('body')[0].innerHTML;")
             .then((value) {
-          String response = value.replaceAll(r"\n", "");
+          String response = value!.replaceAll(r"\n", "");
           response = response.replaceAll(" ", "");
           response = response.replaceAll(r"\", "");
           response = response.substring(1, response.length - 1);

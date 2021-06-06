@@ -22,17 +22,17 @@ import 'package:flutter_wayforpay_package/customView/date_picker.dart';
 class CardDatePicker {
   ///[context]
   BuildContext context;
-  DateTime date = DateTime.now();
+  DateTime? date = DateTime.now();
 
   ///On Date Time Changed
   final ValueChanged<DateTime> onDateTimeChanged;
-  final ValueChanged<DateTime> onDateTimeDone;
+  final ValueChanged<DateTime?>? onDateTimeDone;
 
   final TextStyle buttonTextStyle;
   final Color backgroundColor;
   final String buttonText;
 
-  final FixedExtentScrollController controller;
+  final FixedExtentScrollController? controller;
 
   ///Constructor [SqPicker]
   ///[onPickerChanged] is required
@@ -43,7 +43,7 @@ class CardDatePicker {
     this.buttonText = "Choose",
     this.backgroundColor = const Color.fromRGBO(115, 3, 226, 0.05),
     this.buttonTextStyle = const TextStyle(),
-    @required this.onDateTimeChanged,
+    required this.onDateTimeChanged,
     this.onDateTimeDone,
   });
 
@@ -68,7 +68,7 @@ class CardDatePicker {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        onDateTimeDone(date);
+                        onDateTimeDone!(date);
                       },
                     ),
                   ),

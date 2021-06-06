@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wayforpay_package/flutter_wayforpay_package.dart';
 import 'package:flutter_wayforpay_package/model/card_model.dart';
+import 'package:flutter_wayforpay_package/model/wayforpay_response.dart';
 import 'package:flutter_wayforpay_package/utils/types.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+  MyHomePage({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -68,11 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
       /// Check if _wayForPayResponse is not null
       if (value != null) {
         print("transactionStatus: " +
-            value.transactionStatus +
+            value.transactionStatus! +
             ", reasonCode: " +
             value.reasonCode.toString() +
             ", reason: " +
-            value.reason);
+            value.reason!);
       }
     });
   }
@@ -96,13 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
             orderDate: DateTime.now())
 
         /// Get payment status
-        .then((value) {
+        .then((WayForPayResponse? value) {
       /// Check if _wayForPayResponse is not null
       if (value != null) {
         print("reasonCode: " +
             value.reasonCode.toString() +
             ", reason: " +
-            value.reason);
+            value.reason!);
       }
     });
   }
@@ -111,17 +111,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              color: Colors.blue,
+            ElevatedButton(
               onPressed: payWithPackageScreen,
               child: Container(
-                  width: MediaQuery.of(context).size.width*0.6,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(16),
                   child: Text(
@@ -129,12 +128,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(color: Colors.white),
                   )),
             ),
-            SizedBox(height: 16,),
-            RaisedButton(
-              color: Colors.blue,
+            SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
               onPressed: payManually,
               child: Container(
-                  width: MediaQuery.of(context).size.width*0.6,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(16),
                   child: Text(

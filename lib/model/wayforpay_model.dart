@@ -27,24 +27,24 @@ class WayForPayModel {
     this.productCount,
   });
 
-  String transactionType;
-  String merchantAccount;
-  String merchantDomainName;
-  String merchantTransactionSecureType;
-  String merchantSignature;
-  String orderReference;
-  int apiVersion;
-  int orderDate;
+  String? transactionType;
+  String? merchantAccount;
+  String? merchantDomainName;
+  String? merchantTransactionSecureType;
+  String? merchantSignature;
+  String? orderReference;
+  int? apiVersion;
+  int? orderDate;
   dynamic amount;
-  String currency;
-  String card;
-  String expMonth;
-  String expYear;
-  String cardCvv;
-  String cardHolder;
-  List<String> productName;
-  List<dynamic> productPrice;
-  List<int> productCount;
+  String? currency;
+  String? card;
+  String? expMonth;
+  String? expYear;
+  String? cardCvv;
+  String? cardHolder;
+  List<String>? productName;
+  List<dynamic>? productPrice;
+  List<int>? productCount;
 
   factory WayForPayModel.fromJson(Map<String, dynamic> json) => WayForPayModel(
         transactionType: json["transactionType"],
@@ -83,8 +83,8 @@ class WayForPayModel {
         "expYear": expYear,
         "cardCvv": cardCvv,
         "cardHolder": cardHolder,
-        "productName": List<String>.from(productName.map((x) => x)),
-        "productPrice": List<dynamic>.from(productPrice.map((x) => x)),
-        "productCount": List<int>.from(productCount.map((x) => x)),
+        "productName": List<String>.from(productName!.map((x) => x)),
+        "productPrice": List<dynamic>.from(productPrice!.map((x) => x)),
+        "productCount": List<int>.from(productCount!.map((x) => x)),
       };
 }

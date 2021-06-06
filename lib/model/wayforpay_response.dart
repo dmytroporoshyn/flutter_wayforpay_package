@@ -36,31 +36,31 @@ class WayForPayResponse {
     this.returnUrl,
   });
 
-  String merchantAccount;
-  String authTicket;
-  String orderReference;
-  String merchantSignature;
+  String? merchantAccount;
+  String? authTicket;
+  String? orderReference;
+  String? merchantSignature;
   dynamic amount;
-  String currency;
-  String authCode;
-  String email;
-  String phone;
-  int createdDate;
-  int processingDate;
-  String cardPan;
-  String cardType;
-  String issuerBankCountry;
-  String issuerBankName;
-  String recToken;
-  String transactionStatus;
-  String reason;
-  int reasonCode;
+  String? currency;
+  String? authCode;
+  String? email;
+  String? phone;
+  int? createdDate;
+  int? processingDate;
+  String? cardPan;
+  String? cardType;
+  String? issuerBankCountry;
+  String? issuerBankName;
+  String? recToken;
+  String? transactionStatus;
+  String? reason;
+  int? reasonCode;
   dynamic fee;
-  String paymentSystem;
-  String merchantTransactionType;
-  String d3AcsUrl;
-  String d3Md;
-  String d3Pareq;
+  String? paymentSystem;
+  String? merchantTransactionType;
+  String? d3AcsUrl;
+  String? d3Md;
+  String? d3Pareq;
   dynamic returnUrl;
 
   factory WayForPayResponse.fromJson(Map<String, dynamic> json) =>

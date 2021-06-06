@@ -7,21 +7,21 @@ class MyTextField extends StatelessWidget {
   final bool showSuffixButton;
   final String hint;
   final bool obscureText;
-  final Color suffixColor;
+  final Color? suffixColor;
   final String numberText;
   final String title;
   final bool enable;
   final double textSize;
   final int maxLength;
-  final FocusNode focusNode;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter> inputFormatters;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
-  final VoidCallback onSuffixPress;
+  final VoidCallback? onSuffixPress;
 
   const MyTextField({
-    Key key,
+    Key? key,
     this.suffixIcon = Icons.arrow_drop_down,
     this.showSuffixButton = true,
     this.hint = "",
@@ -46,7 +46,7 @@ class MyTextField extends StatelessWidget {
 //        color: Colors.white,
 //        border: Border.all(color: Color(0xFFCFD9E0), width: 0.5),
 //        borderRadius: BorderRadius.all(Radius.circular(0)),
-      ),
+          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -76,11 +76,10 @@ class MyTextField extends StatelessWidget {
                       inputFormatters: inputFormatters,
                       maxLength: maxLength,
                       buildCounter: (BuildContext context,
-                              {int currentLength,
-                              int maxLength,
-                              bool isFocused}) =>
+                              {int? currentLength,
+                              int? maxLength,
+                              bool? isFocused}) =>
                           null,
-                      maxLengthEnforced: true,
                       obscureText: obscureText,
                       style: TextStyle(
                           fontSize: textSize, color: Color(0xFF414256)),

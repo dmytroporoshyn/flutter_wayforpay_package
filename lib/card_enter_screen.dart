@@ -10,7 +10,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'flutter_wayforpay_package.dart';
 
-
 class CardEnterScreen extends StatefulWidget {
   final WayForPay wayForPay;
   final dynamic amount;
@@ -20,13 +19,13 @@ class CardEnterScreen extends StatefulWidget {
   final DateTime orderDate;
 
   const CardEnterScreen(
-      {Key key,
-      @required this.wayForPay,
-      @required this.amount,
-      @required this.currencyType,
-      @required this.merchantTransactionSecureType,
-      @required this.orderReference,
-      @required this.orderDate})
+      {Key? key,
+      required this.wayForPay,
+      required this.amount,
+      required this.currencyType,
+      required this.merchantTransactionSecureType,
+      required this.orderReference,
+      required this.orderDate})
       : super(key: key);
 
   @override
@@ -53,14 +52,16 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
   int indexStack = 0;
   String errorText = "";
   DateTime cardExpired = DateTime.now();
-  WayForPayResponse _wayForPayResponse;
+  WayForPayResponse? _wayForPayResponse;
 
-  void formatDate(DateTime value) {
-    cardExpired = value;
-    String cardExpiredString = cardExpired.month.toString().padLeft(2, "0") +
-        "/" +
-        cardExpired.year.toString().substring(2);
-    cardExpiredController.text = cardExpiredString;
+  void formatDate(DateTime? value) {
+    if (value != null) {
+      cardExpired = value;
+      String cardExpiredString = cardExpired.month.toString().padLeft(2, "0") +
+          "/" +
+          cardExpired.year.toString().substring(2);
+      cardExpiredController.text = cardExpiredString;
+    }
   }
 
   void showDatePicker() {
@@ -103,32 +104,28 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
             indexStack = 2;
           });
           return wayForPayResponse;
-          break;
         case TransactionStatus.InProcessing:
           setState(() {
             indexStack = 3;
-            errorText = wayForPayResponse.transactionStatus +
+            errorText = wayForPayResponse.transactionStatus! +
                 " " +
                 wayForPayResponse.reasonCode.toString() +
                 ": " +
-                wayForPayResponse.reason;
+                wayForPayResponse.reason!;
           });
           return wayForPayResponse;
-          break;
         case TransactionStatus.Declined:
           setState(() {
             indexStack = 3;
-            errorText = wayForPayResponse.transactionStatus +
+            errorText = wayForPayResponse.transactionStatus! +
                 " " +
                 wayForPayResponse.reasonCode.toString() +
                 ": " +
-                wayForPayResponse.reason;
+                wayForPayResponse.reason!;
           });
           return wayForPayResponse;
-          break;
         default:
           return wayForPayResponse;
-          break;
       }
     });
   }
@@ -274,9 +271,7 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                           Center(
                               child: Icon(
                             CupertinoIcons.check_mark_circled,
-
                             color: Colors.green,
-
                             size: 100,
                           )),
                           Center(
@@ -306,7 +301,7 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
               AnimatedOpacity(
                 duration: Duration(milliseconds: 300),
                 opacity: indexStack != 1 ? 1.0 : 0.0,
-                child: FlatButton(
+                child: ElevatedButton(
                     onPressed: indexStack == 1
                         ? null
                         : () {
@@ -316,9 +311,6 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                               Navigator.of(context).pop(_wayForPayResponse);
                             }
                           },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0))),
-                    color: Theme.of(context).accentColor,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,

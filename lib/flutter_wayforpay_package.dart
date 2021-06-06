@@ -3,7 +3,6 @@ library flutter_wayforpay_package;
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wayforpay_package/model/card_model.dart';
 import 'package:flutter_wayforpay_package/model/pares_model.dart';
@@ -51,13 +50,13 @@ class WayForPay {
   int apiVersion = Constants.apiVersion;
 
   /// List of products names
-  List<String> productName;
+  List<String>? productName;
 
   /// List of products prices
-  List<dynamic> productPrice;
+  List<dynamic>? productPrice;
 
   /// List of products counts
-  List<int> productCount;
+  List<int>? productCount;
 
   /// Open CardEnterScreen
   ///
@@ -66,13 +65,13 @@ class WayForPay {
   /// [merchantTransactionSecureType] the transaction secure type, default value [MerchantTransactionSecureType.AUTO].
   /// [orderReference] the unique order id, cannot be duplicated, recommend to use uuid.
   /// [orderDate] order date, it can be is past
-  Future<WayForPayResponse> openCardEnterScreen(BuildContext context,
-      {@required dynamic amount,
+  Future<WayForPayResponse?> openCardEnterScreen(BuildContext context,
+      {required dynamic amount,
       String currencyType = CurrencyType.UAH,
       String merchantTransactionSecureType = MerchantTransactionSecureType.AUTO,
-      @required String orderReference,
-      @required DateTime orderDate}) async {
-    WayForPayResponse wayForPayResponse = await Navigator.push(
+      required String orderReference,
+      required DateTime orderDate}) async {
+    WayForPayResponse? wayForPayResponse = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => CardEnterScreen(
@@ -96,23 +95,23 @@ class WayForPay {
   /// [orderReference] the unique order id, cannot be duplicated, recommend to use uuid.
   /// [orderDate] order date, it can be is past.
   Future<WayForPayResponse> makePayment(BuildContext context,
-      {@required CardModel cardModel,
-      @required dynamic amount,
+      {required CardModel cardModel,
+      required dynamic amount,
       String currencyType = CurrencyType.UAH,
       String merchantTransactionSecureType =
           MerchantTransactionSecureType.NON3DS,
-      @required String orderReference,
-      @required DateTime orderDate}) async {
+      required String orderReference,
+      required DateTime orderDate}) async {
     String merchantSignature = makeSignature(
-        productName: productName,
+        productName: productName!,
         orderDate: orderDate,
         amount: amount,
         currencyType: currencyType,
         merchantAccount: merchantAccount,
         merchantDomainName: merchantDomainName,
         orderReference: orderReference,
-        productCount: productCount,
-        productPrice: productPrice);
+        productCount: productCount!,
+        productPrice: productPrice!);
     WayForPayModel wayForPayModel = WayForPayModel(
         merchantAccount: merchantAccount,
         transactionType: transactionType,
@@ -137,20 +136,16 @@ class WayForPay {
     switch (wayForPayResponse.transactionStatus) {
       case TransactionStatus.Approved:
         return wayForPayResponse;
-        break;
       case TransactionStatus.InProcessing:
         if (wayForPayResponse.reasonCode == 5100) {
           return open3dsVerification(context, wayForPayResponse);
         } else {
           return wayForPayResponse;
         }
-        break;
       case TransactionStatus.Declined:
         return wayForPayResponse;
-        break;
       default:
         return wayForPayResponse;
-        break;
     }
   }
 
@@ -176,14 +171,14 @@ class WayForPay {
   }
 
   String makeSignature(
-      {List<String> productName,
-      List<dynamic> productPrice,
-      List<int> productCount,
-      String merchantAccount,
-      String merchantDomainName,
-      String currencyType,
-      String orderReference,
-      @required DateTime orderDate,
+      {required List<String> productName,
+      required List<dynamic> productPrice,
+      required List<int> productCount,
+      String? merchantAccount,
+      String? merchantDomainName,
+      String? currencyType,
+      String? orderReference,
+      required DateTime orderDate,
       dynamic amount}) {
     String cipherText =
         "$merchantAccount;$merchantDomainName;$orderReference;${orderDate.millisecondsSinceEpoch};$amount;$currencyType";

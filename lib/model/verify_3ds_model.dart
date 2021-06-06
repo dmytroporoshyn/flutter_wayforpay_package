@@ -11,11 +11,11 @@ class Verify3DsModel {
     this.d3DsPares,
   });
 
-  String transactionType;
-  String authorizationTicket;
-  String d3DsMd;
-  int apiVersion;
-  String d3DsPares;
+  String? transactionType;
+  String? authorizationTicket;
+  String? d3DsMd;
+  int? apiVersion;
+  String? d3DsPares;
 
   factory Verify3DsModel.fromJson(Map<String, dynamic> json) => Verify3DsModel(
     transactionType: json["transactionType"],

@@ -8,8 +8,8 @@ class PaResModel {
     this.md,
   });
 
-  String paRes;
-  String md;
+  String? paRes;
+  String? md;
 
   factory PaResModel.fromJson(Map<String, dynamic> json) => PaResModel(
     paRes: json["PaRes"],
