@@ -16,7 +16,7 @@ class WayforpayProvider {
   Future<WayForPayResponse> fetchWayForPayResponse(
       WayForPayModel wayForPayModel) async {
     final response = await client
-        .post(Uri.parse("https://api.wayforpay.com/api"),
+        .post(Uri.parse('https://api.wayforpay.com/api'),
             body: wayForPayModelToJson(wayForPayModel))
         .timeout(const Duration(seconds: 10))
         .catchError((e) {
@@ -38,7 +38,7 @@ class WayforpayProvider {
   Future<WayForPayResponse> verify3dsSecure(
       Verify3DsModel verify3dsModel) async {
     final response = await client
-        .post(Uri.parse("https://api.wayforpay.com/api"),
+        .post(Uri.parse('https://api.wayforpay.com/api'),
             body: verify3DsModelToJson(verify3dsModel))
         .timeout(const Duration(seconds: 10))
         .catchError((e) {

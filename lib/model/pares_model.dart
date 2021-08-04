@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-PaResModel paResModelFromJson(String str) => PaResModel.fromJson(json.decode(str));
+PaResModel paResModelFromJson(String str) =>
+    PaResModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 class PaResModel {
   PaResModel({
@@ -12,12 +13,12 @@ class PaResModel {
   String? md;
 
   factory PaResModel.fromJson(Map<String, dynamic> json) => PaResModel(
-    paRes: json["PaRes"],
-    md: json["MD"],
-  );
+        paRes: json['PaRes'] != null ? json['PaRes'] as String : null,
+        md: json['MD'] != null ? json['MD'] as String : null,
+      );
 
   Map<String, dynamic> toJson() => {
-    "PaRes": paRes,
-    "MD": md,
-  };
+        'PaRes': paRes,
+        'MD': md,
+      };
 }

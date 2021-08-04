@@ -7,7 +7,8 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 class VerificationScreen extends StatefulWidget {
   final WayForPayResponse? wayForPayResponse;
 
-  const VerificationScreen({Key? key, this.wayForPayResponse}) : super(key: key);
+  const VerificationScreen({Key? key, this.wayForPayResponse})
+      : super(key: key);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -16,15 +17,15 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   final flutterWebViewPlugin = FlutterWebviewPlugin();
   static const String POST_BACK_URL =
-      "https://demo.cloudpayments.ru/WebFormPost/GetWebViewData";
+      'https://demo.cloudpayments.ru/WebFormPost/GetWebViewData';
 
   late String url;
 
   String buildUrl() {
-    return '''<form name="downloadForm" action="${widget.wayForPayResponse!.d3AcsUrl}" method="POST">
-  <input type="hidden" name="PaReq" value="${widget.wayForPayResponse!.d3Pareq}">
-  <input type="hidden" name="MD" value="${widget.wayForPayResponse!.d3Pareq}">
-  <input type="hidden" name="TermUrl" value="$POST_BACK_URL">
+    return '''<form name='downloadForm' action='${widget.wayForPayResponse!.d3AcsUrl}' method='POST'>
+  <input type='hidden' name='PaReq' value='${widget.wayForPayResponse!.d3Pareq}'>
+  <input type='hidden' name='MD' value='${widget.wayForPayResponse!.d3Pareq}'>
+  <input type='hidden' name='TermUrl' value='$POST_BACK_URL'>
   </form>
   <script>
   window.onload = submitForm;
@@ -39,17 +40,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
     url = buildUrl();
 
     flutterWebViewPlugin.onUrlChanged.listen((url) {
-      if (url.startsWith("http") &&
+      if (url.startsWith('http') &&
           url.toLowerCase().contains(POST_BACK_URL.toLowerCase())) {
         flutterWebViewPlugin
             .evalJavascript(
-                "window.document.getElementsByTagName('body')[0].innerHTML;")
+                'window.document.getElementsByTagName(\'body\')[0].innerHTML;')
             .then((value) {
-          String response = value!.replaceAll(r"\n", "");
-          response = response.replaceAll(" ", "");
-          response = response.replaceAll(r"\", "");
+          var response = value!.replaceAll(r'\n', '');
+          response = response.replaceAll(' ', '');
+          response = response.replaceAll(r'\', '');
           response = response.substring(1, response.length - 1);
-          PaResModel paResModel = paResModelFromJson(response);
+          var paResModel = paResModelFromJson(response);
           Navigator.of(context).pop(paResModel);
         });
       }
@@ -62,7 +63,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       url: Uri.dataFromString(url, mimeType: 'text/html').toString(),
       initialChild: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
-        child: Center(
+        child: const Center(
           child: CircularProgressIndicator(),
         ),
       ),

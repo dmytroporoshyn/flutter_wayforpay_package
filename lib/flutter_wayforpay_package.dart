@@ -25,20 +25,20 @@ class WayForPay {
   /// Merchant account
   ///
   /// This field is required
-  /// Default test value "test_merch_n1"
-  String merchantAccount = "test_merch_n1";
+  /// Default test value 'test_merch_n1'
+  String merchantAccount = 'test_merch_n1';
 
   /// Merchant secret key
   ///
   /// This field is required
-  /// Default test value "flk3409refn54t54t*FNJRET"
-  String merchantSecretKey = "flk3409refn54t54t*FNJRET";
+  /// Default test value 'flk3409refn54t54t*FNJRET'
+  String merchantSecretKey = 'flk3409refn54t54t*FNJRET';
 
   /// Merchant domain name
   ///
   /// This field is required
-  /// Default value "www.market.ua"
-  String merchantDomainName = "www.market.ua";
+  /// Default value 'www.market.ua'
+  String merchantDomainName = 'www.market.ua';
 
   /// WayForPay repository
   WayForPayRepository wayForPayRepository = WayForPayRepository();
@@ -71,18 +71,20 @@ class WayForPay {
       String merchantTransactionSecureType = MerchantTransactionSecureType.AUTO,
       required String orderReference,
       required DateTime orderDate}) async {
-    WayForPayResponse? wayForPayResponse = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => CardEnterScreen(
-                  wayForPay: this,
-                  merchantTransactionSecureType: merchantTransactionSecureType,
-                  amount: amount,
-                  currencyType: currencyType,
-                  orderDate: orderDate,
-                  orderReference: orderReference,
-                ),
-            fullscreenDialog: true));
+    var wayForPayResponse = (await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CardEnterScreen(
+          wayForPay: this,
+          merchantTransactionSecureType: merchantTransactionSecureType,
+          amount: amount,
+          currencyType: currencyType,
+          orderDate: orderDate,
+          orderReference: orderReference,
+        ),
+        fullscreenDialog: true,
+      ),
+    )) as WayForPayResponse?;
     return wayForPayResponse;
   }
 
@@ -102,7 +104,7 @@ class WayForPay {
           MerchantTransactionSecureType.NON3DS,
       required String orderReference,
       required DateTime orderDate}) async {
-    String merchantSignature = makeSignature(
+    var merchantSignature = makeSignature(
         productName: productName!,
         orderDate: orderDate,
         amount: amount,
@@ -112,7 +114,7 @@ class WayForPay {
         orderReference: orderReference,
         productCount: productCount!,
         productPrice: productPrice!);
-    WayForPayModel wayForPayModel = WayForPayModel(
+    var wayForPayModel = WayForPayModel(
         merchantAccount: merchantAccount,
         transactionType: transactionType,
         merchantDomainName: merchantDomainName,
@@ -131,7 +133,7 @@ class WayForPay {
         currency: currencyType,
         merchantSignature: merchantSignature,
         merchantTransactionSecureType: merchantTransactionSecureType);
-    WayForPayResponse wayForPayResponse =
+    var wayForPayResponse =
         await wayForPayRepository.fetchWayForPayResponse(wayForPayModel);
     switch (wayForPayResponse.transactionStatus) {
       case TransactionStatus.Approved:
@@ -158,7 +160,7 @@ class WayForPay {
     ));
 
     if (paResModel != null && paResModel is PaResModel) {
-      Verify3DsModel verifyModel = Verify3DsModel(
+      var verifyModel = Verify3DsModel(
           authorizationTicket: wayForPayResponse.authTicket,
           d3DsMd: wayForPayResponse.d3Md,
           d3DsPares: paResModel.paRes,
@@ -180,18 +182,18 @@ class WayForPay {
       String? orderReference,
       required DateTime orderDate,
       dynamic amount}) {
-    String cipherText =
-        "$merchantAccount;$merchantDomainName;$orderReference;${orderDate.millisecondsSinceEpoch};$amount;$currencyType";
-    String names = productName.join(";");
-    String prices = productPrice.join(";");
-    String counts = productCount.join(";");
-    cipherText += ";$names";
-    cipherText += ";$counts";
-    cipherText += ";$prices";
+    var cipherText =
+        '$merchantAccount;$merchantDomainName;$orderReference;${orderDate.millisecondsSinceEpoch};$amount;$currencyType';
+    var names = productName.join(';');
+    var prices = productPrice.join(';');
+    var counts = productCount.join(';');
+    cipherText += ';$names';
+    cipherText += ';$counts';
+    cipherText += ';$prices';
 
     var key = utf8.encode(merchantSecretKey);
     var bytes = utf8.encode(cipherText);
-    var hmacSha256 = new Hmac(md5, key);
+    var hmacSha256 = Hmac(md5, key);
     var digest = hmacSha256.convert(bytes);
 
     return digest.toString();
