@@ -7,29 +7,29 @@ class MyTextField extends StatelessWidget {
   final bool showSuffixButton;
   final String hint;
   final bool obscureText;
-  final Color suffixColor;
+  final Color? suffixColor;
   final String numberText;
   final String title;
   final bool enable;
   final double textSize;
   final int maxLength;
-  final FocusNode focusNode;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter> inputFormatters;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
-  final VoidCallback onSuffixPress;
+  final VoidCallback? onSuffixPress;
 
   const MyTextField({
-    Key key,
+    Key? key,
     this.suffixIcon = Icons.arrow_drop_down,
     this.showSuffixButton = true,
-    this.hint = "",
+    this.hint = '',
     this.onSuffixPress,
     this.obscureText = false,
-    this.numberText = "",
+    this.numberText = '',
     this.suffixColor,
-    this.title = "Card Number",
+    this.title = 'Card Number',
     this.textSize = 26,
     this.maxLength = 256,
     this.inputFormatters,
@@ -42,11 +42,11 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
 //        color: Colors.white,
 //        border: Border.all(color: Color(0xFFCFD9E0), width: 0.5),
 //        borderRadius: BorderRadius.all(Radius.circular(0)),
-      ),
+          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -59,11 +59,11 @@ class MyTextField extends StatelessWidget {
                 )),
           ),
           Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 2,
                   ),
                   Expanded(
@@ -76,19 +76,18 @@ class MyTextField extends StatelessWidget {
                       inputFormatters: inputFormatters,
                       maxLength: maxLength,
                       buildCounter: (BuildContext context,
-                              {int currentLength,
-                              int maxLength,
-                              bool isFocused}) =>
+                              {int? currentLength,
+                              int? maxLength,
+                              bool? isFocused}) =>
                           null,
-                      maxLengthEnforced: true,
                       obscureText: obscureText,
                       style: TextStyle(
-                          fontSize: textSize, color: Color(0xFF414256)),
-                      cursorRadius: Radius.circular(2),
+                          fontSize: textSize, color: const Color(0xFF414256)),
+                      cursorRadius: const Radius.circular(2),
                       decoration: InputDecoration.collapsed(
                         hintText: hint,
                         hintStyle: TextStyle(
-                            color: Color(0xFF9ea5ab), fontSize: textSize),
+                            color: const Color(0xFF9ea5ab), fontSize: textSize),
                       ),
                     ),
                   ),
@@ -96,7 +95,7 @@ class MyTextField extends StatelessWidget {
                     visible: showSuffixButton,
                     child: CupertinoButton(
                       onPressed: onSuffixPress,
-                      padding: EdgeInsets.only(top: 4, bottom: 4),
+                      padding: const EdgeInsets.only(top: 4, bottom: 4),
                       minSize: 10,
                       child: Icon(
                         suffixIcon,

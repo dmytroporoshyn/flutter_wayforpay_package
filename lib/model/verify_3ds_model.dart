@@ -11,25 +11,31 @@ class Verify3DsModel {
     this.d3DsPares,
   });
 
-  String transactionType;
-  String authorizationTicket;
-  String d3DsMd;
-  int apiVersion;
-  String d3DsPares;
+  String? transactionType;
+  String? authorizationTicket;
+  String? d3DsMd;
+  int? apiVersion;
+  String? d3DsPares;
 
   factory Verify3DsModel.fromJson(Map<String, dynamic> json) => Verify3DsModel(
-    transactionType: json["transactionType"],
-    authorizationTicket: json["authorization_ticket"],
-    d3DsMd: json["d3ds_md"],
-    apiVersion: json["apiVersion"],
-    d3DsPares: json["d3ds_pares"],
-  );
+        transactionType: json['transactionType'] != null
+            ? json['transactionType'] as String
+            : null,
+        authorizationTicket: json['authorization_ticket'] != null
+            ? json['authorization_ticket'] as String
+            : null,
+        d3DsMd: json['d3ds_md'] != null ? json['d3ds_md'] as String : null,
+        apiVersion:
+            json['apiVersion'] != null ? json['apiVersion'] as int : null,
+        d3DsPares:
+            json['d3ds_pares'] != null ? json['d3ds_pares'] as String : null,
+      );
 
   Map<String, dynamic> toJson() => {
-    "transactionType": transactionType,
-    "authorization_ticket": authorizationTicket,
-    "apiVersion": apiVersion,
-    "d3ds_md": d3DsMd,
-    "d3ds_pares": d3DsPares,
-  };
+        'transactionType': transactionType,
+        'authorization_ticket': authorizationTicket,
+        'apiVersion': apiVersion,
+        'd3ds_md': d3DsMd,
+        'd3ds_pares': d3DsPares,
+      };
 }

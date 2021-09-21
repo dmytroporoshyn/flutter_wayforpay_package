@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-
 ///Model for card data
 class CardModel {
-
   /// Card number.
   String card;
 
@@ -25,5 +22,9 @@ class CardModel {
   String cardHolder;
 
   CardModel(
-  {@required this.card, @required this.expMonth, @required this.expYear, @required this.cardCvv, @required this.cardHolder});
+      {required this.card,
+      required this.expMonth,
+      required this.expYear,
+      required this.cardCvv,
+      required this.cardHolder});
 }

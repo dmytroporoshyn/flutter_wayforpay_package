@@ -5,7 +5,6 @@ import 'package:flutter_wayforpay_package/utils/types.dart';
 import 'package:http/http.dart';
 
 class WayforpayProvider {
-
   /// Client
   Client client = Client();
 
@@ -17,7 +16,7 @@ class WayforpayProvider {
   Future<WayForPayResponse> fetchWayForPayResponse(
       WayForPayModel wayForPayModel) async {
     final response = await client
-        .post("https://api.wayforpay.com/api",
+        .post(Uri.parse('https://api.wayforpay.com/api'),
             body: wayForPayModelToJson(wayForPayModel))
         .timeout(const Duration(seconds: 10))
         .catchError((e) {
@@ -39,7 +38,7 @@ class WayforpayProvider {
   Future<WayForPayResponse> verify3dsSecure(
       Verify3DsModel verify3dsModel) async {
     final response = await client
-        .post("https://api.wayforpay.com/api",
+        .post(Uri.parse('https://api.wayforpay.com/api'),
             body: verify3DsModelToJson(verify3dsModel))
         .timeout(const Duration(seconds: 10))
         .catchError((e) {

@@ -10,7 +10,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'flutter_wayforpay_package.dart';
 
-
 class CardEnterScreen extends StatefulWidget {
   final WayForPay wayForPay;
   final dynamic amount;
@@ -20,13 +19,13 @@ class CardEnterScreen extends StatefulWidget {
   final DateTime orderDate;
 
   const CardEnterScreen(
-      {Key key,
-      @required this.wayForPay,
-      @required this.amount,
-      @required this.currencyType,
-      @required this.merchantTransactionSecureType,
-      @required this.orderReference,
-      @required this.orderDate})
+      {Key? key,
+      required this.wayForPay,
+      required this.amount,
+      required this.currencyType,
+      required this.merchantTransactionSecureType,
+      required this.orderReference,
+      required this.orderDate})
       : super(key: key);
 
   @override
@@ -34,10 +33,10 @@ class CardEnterScreen extends StatefulWidget {
 }
 
 class _CardEnterScreenState extends State<CardEnterScreen> {
-  var cardNumberFormatter = new MaskTextInputFormatter(
-      mask: '#### #### #### ####', filter: {"#": RegExp(r'[0-9]')});
+  var cardNumberFormatter = MaskTextInputFormatter(
+      mask: '#### #### #### ####', filter: {'#': RegExp(r'[0-9]')});
   var cvvFormatter =
-      new MaskTextInputFormatter(mask: '###', filter: {"#": RegExp(r'[0-9]')});
+      MaskTextInputFormatter(mask: '###', filter: {'#': RegExp(r'[0-9]')});
 
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController cardHolderController = TextEditingController();
@@ -51,16 +50,17 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
   bool obscureText = true;
   bool isLoading = false;
   int indexStack = 0;
-  String errorText = "";
+  String errorText = '';
   DateTime cardExpired = DateTime.now();
-  WayForPayResponse _wayForPayResponse;
+  WayForPayResponse? _wayForPayResponse;
 
-  void formatDate(DateTime value) {
-    cardExpired = value;
-    String cardExpiredString = cardExpired.month.toString().padLeft(2, "0") +
-        "/" +
-        cardExpired.year.toString().substring(2);
-    cardExpiredController.text = cardExpiredString;
+  void formatDate(DateTime? value) {
+    if (value != null) {
+      cardExpired = value;
+      final cardExpiredString =
+          '${cardExpired.month.toString().padLeft(2, '0')}/${cardExpired.year.toString().substring(2)}';
+      cardExpiredController.text = cardExpiredString;
+    }
   }
 
   void showDatePicker() {
@@ -81,11 +81,11 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
     setState(() {
       indexStack = 1;
     });
-    CardModel cardModel = CardModel(
-        card: cardNumberController.text.replaceAll(" ", ""),
+    final cardModel = CardModel(
+        card: cardNumberController.text.replaceAll(' ', ''),
         cardCvv: cvvController.text,
         cardHolder: cardHolderController.text,
-        expMonth: cardExpired.month.toString().padLeft(2, "0"),
+        expMonth: cardExpired.month.toString().padLeft(2, '0'),
         expYear: cardExpired.year.toString());
     widget.wayForPay
         .makePayment(context,
@@ -103,32 +103,22 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
             indexStack = 2;
           });
           return wayForPayResponse;
-          break;
         case TransactionStatus.InProcessing:
           setState(() {
             indexStack = 3;
-            errorText = wayForPayResponse.transactionStatus +
-                " " +
-                wayForPayResponse.reasonCode.toString() +
-                ": " +
-                wayForPayResponse.reason;
+            errorText =
+                '${wayForPayResponse.transactionStatus!} ${wayForPayResponse.reasonCode}: ${wayForPayResponse.reason!}';
           });
           return wayForPayResponse;
-          break;
         case TransactionStatus.Declined:
           setState(() {
             indexStack = 3;
-            errorText = wayForPayResponse.transactionStatus +
-                " " +
-                wayForPayResponse.reasonCode.toString() +
-                ": " +
-                wayForPayResponse.reason;
+            errorText =
+                '${wayForPayResponse.transactionStatus!} ${wayForPayResponse.reasonCode}: ${wayForPayResponse.reason!}';
           });
           return wayForPayResponse;
-          break;
         default:
           return wayForPayResponse;
-          break;
       }
     });
   }
@@ -180,23 +170,23 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
             children: <Widget>[
               Expanded(
                 child: ListView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.all(16),
+                      margin: const EdgeInsets.all(16),
                       child: Image.asset(
-                        "assets/WayForPay_logo_black.png",
+                        'assets/WayForPay_logo_black.png',
                         width: 280,
-                        package: "flutter_wayforpay_package",
+                        package: 'flutter_wayforpay_package',
                       ),
                     ),
                     Container(
                       width: 360,
                       height: 250,
-                      margin: EdgeInsets.all(16),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 15),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
@@ -214,21 +204,21 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                             children: <Widget>[
                               MyTextField(
                                 showSuffixButton: false,
-                                hint: "0000 0000 0000 0000",
+                                hint: '0000 0000 0000 0000',
                                 focusNode: cardNumberFocusNode,
                                 controller: cardNumberController,
                                 keyboardType: TextInputType.number,
-                                title: "Card Number",
+                                title: 'Card Number',
                                 maxLength: 19,
                                 inputFormatters: [cardNumberFormatter],
                               ),
                               MyTextField(
                                 showSuffixButton: false,
-                                title: "Card Holder",
+                                title: 'Card Holder',
                                 focusNode: cardHolderFocusNode,
                                 controller: cardHolderController,
                                 keyboardType: TextInputType.text,
-                                hint: "Ivanov Ivan",
+                                hint: 'Ivanov Ivan',
                               ),
                               Row(
                                 children: <Widget>[
@@ -236,12 +226,12 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                                     flex: 2,
                                     child: CupertinoButton(
                                       onPressed: showDatePicker,
-                                      padding: EdgeInsets.all(0),
+                                      padding: const EdgeInsets.all(0),
                                       child: MyTextField(
                                         controller: cardExpiredController,
                                         showSuffixButton: true,
-                                        title: "Expired",
-                                        hint: "MM/YY",
+                                        title: 'Expired',
+                                        hint: 'MM/YY',
                                         enable: false,
                                         textSize: 20,
                                       ),
@@ -255,9 +245,9 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                                       suffixColor: obscureText
                                           ? Colors.grey
                                           : Theme.of(context).accentColor,
-                                      title: "CVV",
+                                      title: 'CVV',
                                       controller: cvvController,
-                                      hint: "111",
+                                      hint: '111',
                                       inputFormatters: [cvvFormatter],
                                       keyboardType: TextInputType.number,
                                       onSuffixPress: showCvv,
@@ -270,30 +260,29 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                               ),
                             ],
                           ),
-                          Center(child: CircularProgressIndicator()),
-                          Center(
-                              child: Icon(
-                            CupertinoIcons.check_mark_circled,
-
-                            color: Colors.green,
-
-                            size: 100,
-                          )),
+                          const Center(child: CircularProgressIndicator()),
+                          const Center(
+                            child: Icon(
+                              CupertinoIcons.check_mark_circled,
+                              color: Colors.green,
+                              size: 100,
+                            ),
+                          ),
                           Center(
                               child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Icon(
+                              const Icon(
                                 CupertinoIcons.clear_circled,
                                 color: Colors.red,
                                 size: 100,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               Text(
                                 errorText,
-                                style: TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 18),
                               ),
                             ],
                           ))
@@ -304,9 +293,9 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                 ),
               ),
               AnimatedOpacity(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 opacity: indexStack != 1 ? 1.0 : 0.0,
-                child: FlatButton(
+                child: ElevatedButton(
                     onPressed: indexStack == 1
                         ? null
                         : () {
@@ -316,16 +305,14 @@ class _CardEnterScreenState extends State<CardEnterScreen> {
                               Navigator.of(context).pop(_wayForPayResponse);
                             }
                           },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0))),
-                    color: Theme.of(context).accentColor,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
                       height: 50,
                       child: Text(
-                        indexStack == 0 ? "Pay" : "Go back",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        indexStack == 0 ? 'Pay' : 'Go back',
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     )),
               )
